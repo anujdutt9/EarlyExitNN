@@ -1,0 +1,43 @@
+backbone:
+  type: "custom"  # Can be "custom", "resnet18", or any other model from timm or torchvision
+  library: ""  # Only needed if using timm or torchvision
+  pretrained: False  # Use pretrained weights or not (only for timm or torchvision)
+  layers:  # Only needed if using a custom backbone
+    - [Conv, [3, 32, 7, 2]]
+    - [BatchNorm2d, [32]]
+    - [ReLU, []]
+    - [MaxPool2d, [3, 2]]
+    - [Conv, [32, 64, 3, 1]]
+    - [BatchNorm2d, [64]]
+    - [ReLU, []]
+    - [MaxPool2d, [2, 2]]
+    - [Conv, [64, 128, 3, 1]]
+    - [BatchNorm2d, [128]]
+    - [ReLU, []]
+    - [MaxPool2d, [2, 2]]
+    - [Conv, [128, 256, 3, 1]]
+    - [BatchNorm2d, [256]]
+    - [ReLU, []]
+    - [MaxPool2d, [2, 2]]
+    - [Conv, [256, 512, 3, 1]]
+    - [BatchNorm2d, [512]]
+    - [ReLU, []]
+    - [MaxPool2d, [2, 2]]
+
+exit_head:
+  - [Linear, [64 * 56 * 56, 512]]
+  - [ReLU, []]
+  - [Dropout, [0.5]]
+  - [Linear, [512, num_classes]]
+  - [Linear, [128 * 28 * 28, 512]]
+  - [ReLU, []]
+  - [Dropout, [0.5]]
+  - [Linear, [512, num_classes]]
+  - [Linear, [256 * 14 * 14, 512]]
+  - [ReLU, []]
+  - [Dropout, [0.5]]
+  - [Linear, [512, num_classes]]
+  - [Linear, [512 * 7 * 7, 1024]]
+  - [ReLU, []]
+  - [Dropout, [0.5]]
+  - [Linear, [1024, num_classes]]
