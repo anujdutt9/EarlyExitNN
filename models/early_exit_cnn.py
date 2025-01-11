@@ -1,7 +1,6 @@
 from typing import Tuple
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 
 
 class EarlyExitCNN(nn.Module):
@@ -109,3 +108,13 @@ class EarlyExitCNN(nn.Module):
         final_out = self.classifier(x.view(x.size(0), -1))
         
         return exit1_out, exit2_out, exit3_out, final_out
+
+
+if __name__ == "__main__":
+    model = EarlyExitCNN()
+    x = torch.randn(1, 3, 224, 224)
+    exit1_out, exit2_out, exit3_out, final_out = model(x)
+    print("Exit-1 output shape:", exit1_out.shape)
+    print("Exit-2 output shape:", exit2_out.shape)
+    print("Exit-3 output shape:", exit3_out.shape)
+    print("Final output shape:", final_out.shape)
