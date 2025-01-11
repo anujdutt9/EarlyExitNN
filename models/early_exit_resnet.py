@@ -80,16 +80,27 @@ class EarlyExitResNet(nn.Module):
                 Tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]: Tuple containing the output of each exit.
         """
 
-        x = self.features[0:5](x)
+        x = self.backbone[0:5](x)
         exit1_out = self.exit1(x)
         
-        x = self.features[5:6](x)
+        x = self.backbone[5:6](x)
         exit2_out = self.exit2(x)
         
-        x = self.features[6:7](x)
+        x = self.backbone[6:7](x)
         exit3_out = self.exit3(x)
 
-        x = self.features[7:](x)
+        x = self.backbone[7:](x)
         final_out = self.classifier(x)
         
         return exit1_out, exit2_out, exit3_out, final_out
+
+
+if __name__ == "__main__":
+    # Create model
+    model = EarlyExitResNet(num_classes=2)
+    x = torch.randn(1, 3, 224, 224)
+    exit1_out, exit2_out, exit3_out, final_out = model(x)
+    print("Exit-1 output shape:", exit1_out.shape)
+    print("Exit-2 output shape:", exit2_out.shape)
+    print("Exit-3 output shape:", exit3_out.shape)
+    print("Final output shape:", final_out.shape)
